@@ -4,7 +4,7 @@ import '../../data/services/auth_service.dart';
 import 'app_providers.dart';
 
 class AuthController extends StateNotifier<AsyncValue<AuthFormError?>> {
-  AuthController(this.ref) : super(const AsyncData(null));
+  AuthController(this.ref) : super(const AsyncValue.data(null));
 
   final Ref ref;
 
@@ -17,17 +17,17 @@ class AuthController extends StateNotifier<AsyncValue<AuthFormError?>> {
   }
 
   Future<bool> _submit(Future<Object> Function() action) async {
-    state = const AsyncLoading();
+    state = const AsyncValue.loading();
     try {
       await action();
       ref.invalidate(localUserProvider);
-      state = const AsyncData(null);
+      state = const AsyncValue.data(null);
       return true;
     } on AuthFailure catch (error) {
-      state = AsyncData(error.errors);
+      state = AsyncValue.data(error.errors);
       return false;
     } on Object catch (error, stackTrace) {
-      state = AsyncError(error, stackTrace);
+      state = AsyncValue.error(error, stackTrace);
       return false;
     }
   }

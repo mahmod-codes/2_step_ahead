@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_application_1/data/services/gemini_errors.dart';
 import 'package:flutter_application_1/data/services/gemini_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -66,6 +68,36 @@ void main() {
       throwsA(isA<GeminiMissingKeyException>()),
     );
   });
+
+  test('testGeminiServiceThrowsRateLimitForQuotaErrors', () async {
+    FlutterSecureStorage.setMockInitialValues({
+      GeminiService.apiKeyStorageKey: 'key',
+    });
+    final service = GeminiService(
+      const FlutterSecureStorage(),
+      client: const _ThrowingGeminiClient('quota exceeded'),
+    );
+
+    expect(
+      () => service.generateSpec(rawIdea: 'Idea', questionnaireJson: '{}'),
+      throwsA(isA<GeminiRateLimitException>()),
+    );
+  });
+
+  test('testGeminiServiceThrowsNetworkForSocketErrors', () async {
+    FlutterSecureStorage.setMockInitialValues({
+      GeminiService.apiKeyStorageKey: 'key',
+    });
+    final service = GeminiService(
+      const FlutterSecureStorage(),
+      client: const _SocketThrowingGeminiClient(),
+    );
+
+    expect(
+      () => service.generateSpec(rawIdea: 'Idea', questionnaireJson: '{}'),
+      throwsA(isA<GeminiNetworkException>()),
+    );
+  });
 }
 
 class _FakeGeminiClient implements GeminiTextClient {
@@ -79,6 +111,32 @@ class _FakeGeminiClient implements GeminiTextClient {
     required String prompt,
   }) async {
     return response;
+  }
+}
+
+class _ThrowingGeminiClient implements GeminiTextClient {
+  const _ThrowingGeminiClient(this.message);
+
+  final String message;
+
+  @override
+  Future<String?> generateText({
+    required String apiKey,
+    required String prompt,
+  }) {
+    throw StateError(message);
+  }
+}
+
+class _SocketThrowingGeminiClient implements GeminiTextClient {
+  const _SocketThrowingGeminiClient();
+
+  @override
+  Future<String?> generateText({
+    required String apiKey,
+    required String prompt,
+  }) {
+    throw const SocketException('offline');
   }
 }
 

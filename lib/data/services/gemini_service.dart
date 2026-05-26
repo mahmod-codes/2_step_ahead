@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 import '../../core/constants/gemini_constants.dart';
 import '../../core/utils/json_parser.dart';
-import 'flutter_secure_storage_stub.dart';
 import 'gemini_errors.dart';
 
 abstract class GeminiTextClient {
@@ -49,8 +49,8 @@ class GeminiService {
   final GeminiTextClient client;
 
   Future<bool> hasApiKey() async {
-    const String apiKey = 'YOUR_GEMINI_API_KEY_HERE';
-    return apiKey.trim().isNotEmpty;
+    final key = await _secureStorage.read(key: apiKeyStorageKey);
+    return key != null && key.trim().isNotEmpty;
   }
 
   Future<void> saveApiKey(String apiKey) {
@@ -64,8 +64,8 @@ class GeminiService {
     required String rawIdea,
     required String questionnaireJson,
   }) async {
-    const String apiKey = 'YOUR_GEMINI_API_KEY_HERE';
-    if (apiKey.trim().isEmpty) {
+    final apiKey = await _secureStorage.read(key: apiKeyStorageKey);
+    if (apiKey == null || apiKey.trim().isEmpty) {
       throw GeminiMissingKeyException();
     }
 

@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../data/database/app_database.dart';
 import '../../data/services/auth_service.dart';
-import '../../data/services/flutter_secure_storage_stub.dart';
 import '../../data/services/gemini_service.dart';
 import '../../data/services/local_app_repository.dart';
 import '../../domain/entities/generated_spec.dart';

@@ -6,12 +6,12 @@ import 'app_providers.dart';
 import 'project_provider.dart';
 
 class GenerationController extends StateNotifier<AsyncValue<void>> {
-  GenerationController(this.ref) : super(const AsyncData(null));
+  GenerationController(this.ref) : super(const AsyncValue.data(null));
 
   final Ref ref;
 
   Future<void> generate(Project project) async {
-    state = const AsyncLoading();
+    state = const AsyncValue.loading();
     try {
       final response =
           await ref.read(repositoryProvider).getResponseByProjectId(project.id);
@@ -29,9 +29,9 @@ class GenerationController extends StateNotifier<AsyncValue<void>> {
       await ref
           .read(projectListControllerProvider(project.userId).notifier)
           .loadProjects(project.userId);
-      state = const AsyncData(null);
+      state = const AsyncValue.data(null);
     } on Object catch (error, stackTrace) {
-      state = AsyncError(error, stackTrace);
+      state = AsyncValue.error(error, stackTrace);
     }
   }
 }

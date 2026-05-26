@@ -21,7 +21,12 @@ class SpecSections extends StatelessWidget {
           child: ExpansionTile(
             initiallyExpanded: true,
             maintainState: true,
-            title: Text(_title(entry.key)),
+            title: Text(
+              _title(entry.key),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.normal,
+                  ),
+            ),
             children: [
               Padding(
                 padding: const EdgeInsets.all(16),

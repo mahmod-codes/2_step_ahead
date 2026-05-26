@@ -63,20 +63,20 @@ class AppColors {
   const AppColors._();
 
   static const darkStatusBadges = StatusBadgeColors(
-    pendingContainer: Color(0xFF5C3D00),
-    pendingForeground: Color(0xFFFFDFA3),
-    generatingContainer: Color(0xFF003A68),
-    generatingForeground: Color(0xFFAED3FF),
-    completedContainer: Color(0xFF0F4F2F),
-    completedForeground: Color(0xFFA9F2C5),
+    pendingContainer: Color(0xFFFFC107),
+    pendingForeground: Color(0xFF1F1600),
+    generatingContainer: Color(0xFF2196F3),
+    generatingForeground: Color(0xFFFFFFFF),
+    completedContainer: Color(0xFF4CAF50),
+    completedForeground: Color(0xFFFFFFFF),
   );
 
   static const lightStatusBadges = StatusBadgeColors(
-    pendingContainer: Color(0xFFFFE3B3),
-    pendingForeground: Color(0xFF4A3100),
-    generatingContainer: Color(0xFFD1E4FF),
-    generatingForeground: Color(0xFF003254),
-    completedContainer: Color(0xFFC6F1D4),
-    completedForeground: Color(0xFF063A1F),
+    pendingContainer: Color(0xFFFFC107),
+    pendingForeground: Color(0xFF1F1600),
+    generatingContainer: Color(0xFF2196F3),
+    generatingForeground: Color(0xFFFFFFFF),
+    completedContainer: Color(0xFF4CAF50),
+    completedForeground: Color(0xFFFFFFFF),
   );
 }
